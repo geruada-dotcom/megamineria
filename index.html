@@ -1,0 +1,1306 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Detrás de la Mina</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: capas de roca (estratos) como identidad; secciones apiladas, cada una un juego o un tema */
+:root{
+  --bg:#EDF1F3; --surface:#FFFFFF; --surface2:#E1E8EC; --fg:#112028; --muted:#475963; --line:#C6D2D8;
+  --copper:#B4531F; --on-copper:#FFFFFF; --water:#0E727C; --good:#1B7A4B; --bad:#B3261E;
+  --s1:#5C7380; --s2:#8FA2AC; --s3:#C4622D; --s4:#0E727C; --s5:#B9C6CD;
+  --display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1A20; --surface:#17252D; --surface2:#203540; --fg:#E6EEF1; --muted:#9FB2BB; --line:#2D424D;
+  --copper:#EE8E5F; --on-copper:#1A0E07; --water:#52C5CE; --good:#58C58F; --bad:#FF8A80;
+  --s1:#3F5561; --s2:#5E7683; --s3:#D9743F; --s4:#2A9AA4; --s5:#2D424D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1A20; --surface:#17252D; --surface2:#203540; --fg:#E6EEF1; --muted:#9FB2BB; --line:#2D424D;
+  --copper:#EE8E5F; --on-copper:#1A0E07; --water:#52C5CE; --good:#58C58F; --bad:#FF8A80;
+  --s1:#3F5561; --s2:#5E7683; --s3:#D9743F; --s4:#2A9AA4; --s5:#2D424D; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;
+  padding-block:0 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:900px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1.08;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.7rem,4.5vw,2.3rem);font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.2rem;font-weight:600}
+p{margin:0}
+a{color:var(--water)}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--copper)}
+.lead{color:var(--muted);max-width:62ch}
+section{padding-top:56px;display:grid;gap:20px}
+.hero{padding-top:36px;display:grid;gap:18px}
+h1{font-size:clamp(2.6rem,10vw,5rem);font-weight:800;letter-spacing:-.025em}
+.strata{display:grid;gap:3px;border-radius:6px;overflow:hidden;margin-top:6px}
+.strata i{display:block;height:12px}
+.strata i:nth-child(1){background:var(--s5);height:8px}.strata i:nth-child(2){background:var(--s2);height:14px}
+.strata i:nth-child(3){background:var(--s1);height:10px}.strata i:nth-child(4){background:var(--s3);height:18px}
+.strata i:nth-child(5){background:var(--s4);height:9px}.strata i:nth-child(6){background:var(--s1);height:16px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{background:var(--surface2);border-radius:99px;padding:4px 12px;font-size:.88rem;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+button{font:inherit;color:inherit;cursor:pointer}
+.chip{background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 14px;min-height:46px;font-weight:500}
+.chip[aria-pressed="true"]{border-color:var(--copper);background:var(--surface2)}
+.btn{background:var(--copper);color:var(--on-copper);border:0;border-radius:10px;padding:11px 20px;font-weight:700;min-height:46px}
+.btn.ghost{background:transparent;color:var(--fg);border:2px solid var(--line)}
+button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--water);outline-offset:2px}
+.out{min-height:5.5em}
+.tag{display:inline-block;background:var(--surface2);border-radius:6px;padding:2px 9px;font-weight:700;font-size:.9rem;margin:2px 4px 2px 0}
+.note{font-size:.9rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.two>*{min-width:0}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+details{border-top:1px solid var(--line);padding:10px 0}
+details:first-of-type{border-top:0}
+summary{cursor:pointer;font-weight:700;list-style:none;padding:4px 0;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.3rem;line-height:1;color:var(--copper)}
+details[open] summary::after{content:"–"}
+details p{margin-top:6px}
+.reply{border-left:3px solid var(--water);padding-left:12px;margin-top:8px;color:var(--muted);font-size:.95rem}
+.col-h{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.bar{height:22px;border-radius:6px;background:var(--surface2);overflow:hidden}
+.bar b{display:block;height:100%;background:var(--s1);border-radius:6px}
+.bar.metal b{background:var(--copper);min-width:3px}
+.big{font-family:var(--display);font-weight:800;font-size:clamp(1.5rem,5vw,2.1rem);line-height:1.15}
+input[type=range]{width:100%;accent-color:var(--copper);min-height:36px}
+.meters{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px}
+@media(max-width:560px){.meters{grid-template-columns:1fr}}
+.meter label{display:flex;justify-content:space-between;font-size:.9rem;font-weight:700}
+.meter .bar b{transition:width .5s}
+.m-d b{background:var(--s3)}.m-e b{background:var(--s1)}.m-a b{background:var(--s4)}.m-c b{background:var(--s2)}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:12px 14px;min-height:48px}
+.opt:hover{border-color:var(--copper)}
+.opt:disabled{opacity:.6;cursor:default}.opt.picked{border-color:var(--copper);opacity:1}
+.fb{background:var(--surface2);border-radius:10px;padding:12px 14px}
+.ok{color:var(--good);font-weight:700}.no{color:var(--bad);font-weight:700}
+.steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.steps .chip{padding:8px 4px;text-align:center;font-weight:700;font-size:.92rem;overflow-wrap:anywhere}
+@media(max-width:560px){.steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
+ul.clean{margin:0;padding-left:1.2em;display:grid;gap:6px}
+footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line)}
+footer li{overflow-wrap:anywhere}
+/* celular 3D */
+.phone-btn{display:flex;align-items:center;gap:22px;width:100%;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:22px;transition:border-color .2s,transform .2s}
+.phone-btn:hover{border-color:var(--copper);transform:translateY(-2px)}
+.phone{position:relative;flex:none;width:86px;height:168px;border-radius:20px;background:var(--s1);border:4px solid var(--fg);animation:ping 2.4s infinite}
+.ph-screen{position:absolute;inset:6px;border-radius:12px;background:linear-gradient(160deg,var(--s4),var(--s2) 55%,var(--s3))}
+.ph-dot{position:absolute;top:10px;left:50%;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--fg)}
+.phone-cta{display:grid;gap:8px;min-width:0}
+.phone-cta b{font-family:var(--display);font-size:1.7rem;line-height:1.1}
+.phone-cta .sub{color:var(--muted)}
+.phone-go{justify-self:start;background:var(--copper);color:var(--on-copper);border-radius:10px;padding:9px 16px;font-weight:700}
+@keyframes ping{0%{box-shadow:0 0 0 0 var(--copper)}70%,100%{box-shadow:0 0 0 14px transparent}}
+.viewer{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;gap:12px;padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.viewer[hidden]{display:none}
+.v-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.v-head h2{font-size:clamp(1.2rem,4vw,1.6rem)}
+.v-head .btn{min-height:42px;padding:8px 16px}
+.v-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px}
+.stage{position:relative;min-height:0;background:var(--surface2);border:1px solid var(--line);border-radius:12px;overflow:hidden;touch-action:none;cursor:grab}
+.stage:active{cursor:grabbing}
+.stage canvas{display:block;width:100%;height:100%}
+.stage .hint{position:absolute;left:12px;right:12px;bottom:10px;font-size:.82rem;color:var(--muted);pointer-events:none;text-align:center}
+.v-panel{min-height:0;overflow:auto;display:grid;gap:14px;align-content:start}
+.v-panel .chip{min-height:40px;padding:6px 12px}
+.lbl{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+@media(max-width:760px){.v-body{grid-template-columns:1fr;grid-template-rows:minmax(200px,42%) minmax(0,1fr)}.phone-btn{padding:16px;gap:16px}}
+.mgstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:480px){.mgstats{grid-template-columns:1fr}}
+.rockbtn{position:relative;display:grid;place-items:center;gap:4px;width:100%;min-height:150px;background:var(--surface2);border:2px solid var(--line);border-radius:14px;padding:12px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.rockbtn:active:not(:disabled){transform:scale(.98)}
+.rockbtn:hover:not(:disabled){border-color:var(--copper)}
+.rockbtn:disabled{opacity:.6;cursor:default}
+.rockbtn svg{width:110px;height:auto}
+.rockbtn b{font-family:var(--display);font-size:1.3rem}
+.pop{position:absolute;font-weight:800;color:var(--copper);pointer-events:none;animation:rise .7s ease-out forwards}
+@keyframes rise{from{transform:translateY(0);opacity:1}to{transform:translateY(-60px);opacity:0}}
+#mgUp{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:640px){#mgUp{grid-template-columns:1fr}}
+#mgUp .opt{display:grid;gap:4px}
+#mgUp .opt b{font-family:var(--display)}
+.cap{position:absolute;top:10px;left:10px;right:10px;z-index:2;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:.9rem;pointer-events:none}
+/* intro: qué es la megaminería */
+.pit{display:block;width:100%;height:auto;border-radius:10px;background:var(--surface2)}
+.pit g{transition:opacity .4s}
+.pit text{fill:var(--muted);font-family:var(--body);font-size:11px}
+#mtFacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fact{background:var(--surface2);border-radius:10px;padding:12px 14px;display:grid;gap:4px}
+@media(max-width:560px){#mtFacts{grid-template-columns:1fr}}
+/* escape room */
+.dots{display:flex;gap:8px}
+.dot{width:14px;height:14px;border-radius:50%;background:var(--surface2);border:2px solid var(--line)}
+.dot.on{background:var(--copper);border-color:var(--copper)}
+.dot.cur{border-color:var(--fg)}
+.story{background:var(--surface2);border-radius:10px;padding:14px 16px}
+.inp{font:inherit;min-height:46px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--surface);color:var(--fg);width:9em}
+.inp.code{letter-spacing:.4em;text-align:center;width:7em;font-size:1.3rem;font-weight:700}
+.seq{min-height:1.6em;font-weight:700}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.pop{animation:none!important}.phone{animation:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">Ciencias, sociedad y ambiente</div>
+  <h1>Detrás de la Mina</h1>
+  <div class="strata" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <p class="lead">En Argentina se discute mucho la megaminería: unos dicen que trae trabajo y dólares, otros que pone en riesgo el agua y los pueblos. Acá vas a jugar, calcular y comparar datos para armar tu propia opinión.</p>
+  <div class="pills"><span class="pill">6 actividades</span><span class="pill">Sin respuesta "correcta" sobre qué pensar</span><span class="pill">Datos de 2025 y 2026</span></div>
+</header>
+
+<!-- 0 -->
+<section id="que-es">
+  <div class="eyebrow">Antes de empezar</div>
+  <h2>¿Qué es la megaminería?</h2>
+  <p class="lead">Es la minería a gran escala: se mueve muchísima roca con maquinaria enorme para sacar metales como oro, plata, cobre o litio. Muchas veces se hace a cielo abierto, o sea excavando un pozo gigante en la superficie.</p>
+  <div class="card" style="display:grid;gap:14px">
+    <div class="row" id="mtBtns">
+      <button class="chip" data-s="small" type="button" aria-pressed="false">Minería chica</button>
+      <button class="chip" data-s="large" type="button" aria-pressed="true">Megaminería</button>
+    </div>
+    <svg class="pit" viewBox="0 0 320 150" role="img" aria-label="Dibujo en corte de un pozo de mina chico y de uno grande">
+      <rect x="0" y="55" width="320" height="95" fill="var(--s2)"/>
+      <rect x="0" y="86" width="320" height="14" fill="var(--s1)" opacity=".5"/>
+      <rect x="0" y="120" width="320" height="10" fill="var(--s3)" opacity=".6"/>
+      <g id="pitSmall" style="opacity:0">
+        <path d="M135 55 L145 72 L175 72 L185 55 Z" fill="var(--surface2)" stroke="var(--fg)" stroke-width="1.5"/>
+        <rect x="152" y="64" width="14" height="8" rx="1" fill="var(--copper)"/>
+      </g>
+      <g id="pitLarge">
+        <path d="M25 55 L70 80 L100 105 L220 105 L250 80 L295 55 Z" fill="var(--surface2)" stroke="var(--fg)" stroke-width="1.5"/>
+        <path d="M70 80 L96 80 M224 80 L250 80" stroke="var(--fg)" stroke-width="1" opacity=".5"/>
+        <rect x="120" y="92" width="34" height="13" rx="2" fill="var(--copper)"/>
+        <rect x="165" y="92" width="34" height="13" rx="2" fill="var(--copper)"/>
+        <rect x="74" y="68" width="24" height="12" rx="2" fill="var(--copper)"/>
+        <rect x="224" y="68" width="24" height="12" rx="2" fill="var(--copper)"/>
+      </g>
+      <text x="10" y="18">Corte de un pozo (dibujo esquemático, sin escala)</text>
+    </svg>
+    <div id="mtFacts"></div>
+  </div>
+  <p class="note">El nombre también se discute: quienes la cuestionan suelen decir "megaminería", y las empresas y gobiernos suelen decir "minería a gran escala". En esta página usamos los dos.</p>
+
+  <h3 style="margin-top:8px">Cómo llegamos hasta acá</h3>
+  <div class="row" id="tlBtns"></div>
+  <div class="card out" id="tlOut" aria-live="polite"></div>
+</section>
+
+<!-- 1 -->
+<section id="mochila">
+  <div class="eyebrow">Actividad 1</div>
+  <h2>¿Qué minerales hay en tu celular?</h2>
+  <p class="lead">Casi todo lo que usás tiene algo que salió de la tierra. Tocá el celular para desarmarlo en 3D y descubrir qué mineral está en cada parte.</p>
+  <button class="phone-btn" id="openPhone" type="button" aria-haspopup="dialog">
+    <span class="phone" aria-hidden="true"><span class="ph-screen"></span><span class="ph-dot"></span></span>
+    <span class="phone-cta">
+      <b>Celular</b>
+      <span class="sub">Adentro hay litio, cobre, oro y plata. Girálo, desarmalo y buscá dónde está cada uno.</span>
+      <span class="phone-go">Verlo en 3D</span>
+    </span>
+  </button>
+  <p class="note">Hay muy poco de cada metal en un solo celular: en el orden de gramos de cobre y apenas decenas de miligramos de oro (valores aproximados, cambian según el modelo). Pesa porque se fabrican millones.</p>
+</section>
+
+<div class="viewer" id="eViewer" role="dialog" aria-modal="true" aria-labelledby="eTitle" hidden>
+  <div class="v-head"><h2 id="eTitle">Salí de la mina</h2><button class="btn ghost" id="eClose" type="button">Cerrar</button></div>
+  <div class="v-body">
+    <div class="stage" id="eStage"><div class="cap" id="eCap" hidden aria-live="polite"></div><div class="hint">Arrastrá para mirar alrededor · tocá los objetos para examinarlos</div></div>
+    <div class="v-panel"><div class="card" style="display:grid;gap:14px" id="esc"></div></div>
+  </div>
+</div>
+
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="vTitle" hidden>
+  <div class="v-head"><h2 id="vTitle">Un celular por dentro</h2><button class="btn ghost" id="vClose" type="button">Cerrar</button></div>
+  <div class="v-body">
+    <div class="stage" id="stage"><div class="hint">Arrastrá para girar · pellizcá o usá la rueda para acercar</div></div>
+    <div class="v-panel">
+      <div>
+        <label class="lbl" for="pExp">Armado ↔ Desarmado</label>
+        <input type="range" id="pExp" min="0" max="100" value="70">
+      </div>
+      <div class="row"><button class="chip" id="pAuto" type="button" aria-pressed="true">Girar solo</button></div>
+      <div><div class="lbl" style="margin-bottom:8px">Partes</div><div class="row" id="pParts"></div></div>
+      <div><div class="lbl" style="margin-bottom:8px">¿Dónde está cada mineral?</div><div class="row" id="pMins"></div></div>
+      <div class="card" id="pInfo" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 2 -->
+<section id="roca">
+  <div class="eyebrow">Actividad 2</div>
+  <h2>De la roca al anillo</h2>
+  <p class="lead">En una mina grande se mueve muchísima roca para sacar muy poquito metal. Probalo vos.</p>
+  <div class="card" style="display:grid;gap:14px">
+    <div class="row" id="metalBtns">
+      <button class="chip" data-m="oro" aria-pressed="true">Oro</button>
+      <button class="chip" data-m="cobre" aria-pressed="false">Cobre</button>
+    </div>
+    <div>
+      <label for="tons" style="font-weight:700">Toneladas de roca: <span id="tonsVal">100</span></label>
+      <input type="range" id="tons" min="1" max="1000" value="100">
+    </div>
+    <div class="big" id="metalOut"></div>
+    <div style="display:grid;gap:6px">
+      <div class="note">Roca</div><div class="bar"><b style="width:100%"></b></div>
+      <div class="note" id="metalLbl"></div><div class="bar metal"><b id="metalBar" style="width:1%"></b></div>
+    </div>
+    <p class="note" id="metalNote"></p>
+  </div>
+  <h3 style="margin-top:8px">Las etapas de una mina</h3>
+  <div class="steps" id="steps"></div>
+  <div class="card out" id="stepOut" aria-live="polite"></div>
+</section>
+
+<!-- 3 -->
+<section id="gobierno">
+  <div class="eyebrow">Actividad 3</div>
+  <h2>Sos gobernador o gobernadora</h2>
+  <p class="lead">Cuatro decisiones, cuatro medidores. Es un juego simplificado: sirve para sentir que cada decisión tiene costos y beneficios, no para decir qué es lo correcto.</p>
+  <div class="card" style="display:grid;gap:18px">
+    <div class="meters" id="meters"></div>
+    <div id="game" style="display:grid;gap:12px"></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="miradas">
+  <div class="eyebrow">Actividad 4</div>
+  <h2>Dos miradas sobre lo mismo</h2>
+  <p class="lead">Abrí cada punto. Los dos lados usan datos reales, pero cuentan cosas distintas.</p>
+  <div class="two">
+    <div class="card">
+      <div class="col-h"><h3>Quienes la impulsan dicen</h3><span class="note">Empresas, parte del Gobierno y varias provincias mineras</span></div>
+      <details><summary>Trae dólares</summary>
+        <p>Las exportaciones mineras superaron los US$ 6.000 millones en 2025, un récord, y fueron cerca del 7% de todo lo que exportó el país. Las cámaras del sector proyectan más de US$ 9.000 millones para 2026.</p>
+        <p class="reply">Lo que responden los críticos: es un número grande, pero la minería pesa poco en toda la economía (en un informe con datos de 2019, 0,6% del PBI).</p></details>
+      <details><summary>Da trabajo bien pago</summary>
+        <p>El empleo directo en minería metalífera y de litio promedió 19.011 puestos en el segundo trimestre de 2026, un 8,5% más que un año antes. Un informe del sector cuenta más de 120.000 puestos si se suman los indirectos, con sueldos mucho más altos que el promedio.</p>
+        <p class="reply">Lo que responden los críticos: comparado con el empleo total del país es poco, y puede competir con otras actividades como el turismo o la agricultura.</p></details>
+      <details><summary>Hacen falta cobre y litio</summary>
+        <p>Los autos eléctricos, las baterías y las redes eléctricas usan mucho cobre y litio. Argentina tiene grandes reservas y muchos proyectos esperan inversión.</p>
+        <p class="reply">Lo que responden los críticos: que el mineral sea útil para la energía limpia no quita que la mina gaste agua y mueva montañas.</p></details>
+      <details><summary>Hay reglas más claras</summary>
+        <p>El régimen RIGI da beneficios a grandes inversiones, y en abril de 2026 se reformó la Ley de Glaciares (ley 27.804). Las empresas dicen que eso da seguridad jurídica para invertir.</p>
+        <p class="reply">Lo que responden los críticos: la reforma abre zonas que antes estaban protegidas.</p></details>
+    </div>
+    <div class="card">
+      <div class="col-h"><h3>Quienes la cuestionan dicen</h3><span class="note">Asambleas vecinales, organizaciones ambientales, parte de la ciencia</span></div>
+      <details><summary>Usa mucha agua en zonas secas</summary>
+        <p>La minería suele estar en la cordillera, donde hay poca agua. Los proyectos de cobre más grandes están en zonas de alta montaña con glaciares y ambiente periglacial.</p>
+        <p class="reply">Lo que responden las empresas: dicen que algunos glaciares dentro de sus áreas no son relevantes para el sistema hídrico y que operan con controles.</p></details>
+      <details><summary>Pueden pasar accidentes</summary>
+        <p>En septiembre de 2015, en la mina Veladero (San Juan), una falla en una válvula derramó solución con cianuro. Se considera uno de los peores incidentes mineros del país, y la empresa fue multada con US$ 10 millones.</p>
+        <p class="reply">Lo que responde el sector: los controles y las normas mejoraron, y las empresas dicen que cada proyecto nuevo cumple estudios ambientales.</p></details>
+      <details><summary>Poco trabajo y ganancias que se van</summary>
+        <p>Según un informe con datos de 2019, la minería metalífera tenía unos 9.700 puestos formales directos, el 0,15% del empleo formal. Los críticos dicen que gran parte de la ganancia se va con empresas extranjeras.</p>
+        <p class="reply">Lo que responde el sector: los puestos pagan mucho más que el promedio y generan empleo indirecto, que no se ve en esa cuenta.</p></details>
+      <details><summary>La comunidad debería poder decidir</summary>
+        <p>Esto se llama "licencia social". Un estudio sobre 38 proyectos presentados entre 2002 y 2018 encontró que más de la mitad se suspendieron o cancelaron por movilización social. Mendoza y Chubut tienen leyes que limitan o prohíben la megaminería.</p>
+        <p class="reply">Lo que responden quienes la impulsan: piden que la decisión sea técnica y que cada provincia defina sus reglas, con proyectos que cumplan los estudios.</p></details>
+    </div>
+  </div>
+  <div class="card">
+    <h3>¿Por qué los números no coinciden?</h3>
+    <p style="margin-top:6px">Porque cada informe elige qué cuenta: empleo directo o también indirecto, un año u otro, solo minería de metales o toda la minería. Antes de usar una cifra, mirá siempre quién la publicó, de qué año es y qué incluye.</p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="escape">
+  <div class="eyebrow">Actividad 5</div>
+  <h2>Salí de la mina</h2>
+  <p class="lead">Quedaste encerrado en una mina. Resolvé cuatro salas para juntar las llaves del candado de la salida. Todo lo que necesitás está en esta página.</p>
+  <button class="phone-btn" id="openEsc" type="button" aria-haspopup="dialog">
+    <span class="phone" aria-hidden="true" style="width:120px;height:84px;border-radius:12px;animation:none"><span class="ph-screen" style="background:linear-gradient(180deg,#0b1318,var(--s1) 60%,var(--s3))"></span></span>
+    <span class="phone-cta">
+      <b>Entrar a la mina</b>
+      <span class="sub">Caminá por el túnel en 3D, mirá alrededor, tocá los objetos y resolvé las cuatro salas.</span>
+      <span class="phone-go">Jugar en 3D</span>
+    </span>
+  </button>
+</section>
+
+<section id="mina-juego">
+  <div class="eyebrow">Actividad 6</div>
+  <h2>Mina en marcha</h2>
+  <p class="lead">Tenés un año, 12 meses que pasan en un par de minutos, para dirigir una mina. Tu equipo excava solo y vos decidís las mejoras y los imprevistos. Cuidá el agua y la confianza del pueblo: si alguno de los dos llega a cero, la mina se frena.</p>
+  <div class="card" id="mg" style="display:grid;gap:16px"></div>
+</section>
+
+<!-- extra -->
+<section id="investiga">
+  <div class="eyebrow">Para seguir</div>
+  <h2>Investigá como un periodista</h2>
+  <div class="two">
+    <div class="card">
+      <h3>Preguntas para cualquier nota</h3>
+      <ul class="clean" style="margin-top:10px">
+        <li>¿Quién lo escribió y qué intereses puede tener?</li>
+        <li>¿De qué año son los datos?</li>
+        <li>¿Cuenta empleo directo, indirecto o los dos?</li>
+        <li>¿Muestra también lo que dice la otra postura?</li>
+        <li>¿Dice de dónde sacó cada número?</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Glosario rápido</h3>
+      <details><summary>Megaminería</summary><p>Minería a gran escala, muchas veces a cielo abierto, con mucha maquinaria y movimiento de roca.</p></details>
+      <details><summary>Cielo abierto</summary><p>Se hace un pozo enorme en la superficie y se saca la roca desde ahí, en vez de cavar túneles.</p></details>
+      <details><summary>Lixiviación</summary><p>Se rocía la roca triturada con una solución que separa el metal. En el oro, esa solución puede llevar cianuro.</p></details>
+      <details><summary>RIGI</summary><p>Régimen de Incentivo para Grandes Inversiones: da beneficios impositivos y estabilidad a proyectos muy grandes.</p></details>
+      <details><summary>Ambiente periglacial</summary><p>Terreno de montaña con hielo en el suelo congelado. La discusión es cuánto cuenta como reserva de agua.</p></details>
+      <details><summary>Licencia social</summary><p>La aceptación de una comunidad para que un proyecto se haga en su zona.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <h3>Fuentes consultadas (noviembre de 2026)</h3>
+  <p class="note" style="margin:6px 0 10px">Las cifras cambian seguido. Algunas fuentes son del sector minero y otras de organizaciones críticas; por eso conviene leer varias.</p>
+  <ul class="clean note">
+    <li><a href="https://www.mdzol.com/dinero/mineria-record-exportaciones-y-reclamo-reglas-claras-n1442471" target="_blank" rel="noopener">MDZ: récord de exportaciones mineras</a></li>
+    <li><a href="https://mase.lmneuquen.com/mineria/mineria-argentina-63-proyectos-12-rigi-y-19011-empleos-el-segundo-trimestre-n1260932/amp" target="_blank" rel="noopener">LM Neuquén: proyectos, RIGI y empleo 2.º trimestre 2026</a></li>
+    <li><a href="https://mase.lmneuquen.com/mineria/de-los-glaciares-las-retenciones-las-claves-del-nuevo-marco-regulatorio-la-mineria-n1260935" target="_blank" rel="noopener">LM Neuquén: nuevo marco regulatorio y Ley 27.804</a></li>
+    <li><a href="https://dialogue.earth/es/?p=50050042" target="_blank" rel="noopener">Dialogue Earth: Argentina quiere más minería en medio de conflictos</a></li>
+    <li><a href="https://www.iprofesional.com/actualidad/460107-argentina-busca-convertirse-en-potencia-minera-pero-conflictos-ambientales-ganan-lugar" target="_blank" rel="noopener">iProfesional: potencia minera y conflictos ambientales</a></li>
+    <li><a href="https://www.tiempoar.com.ar/ta_article/megamineria-jachal-rigi/amp/" target="_blank" rel="noopener">Tiempo Argentino: Jáchal y el derrame de 2015</a></li>
+    <li><a href="https://rebelion.org/las-protestas-sociales-ayudan-al-control-de-la-megamineria-en-argentina/" target="_blank" rel="noopener">SciDev.Net (vía Rebelión): protestas y control de la megaminería</a></li>
+    <li><a href="https://elmercurio.com.ec/?p=1259028" target="_blank" rel="noopener">AFP: boom minero y reforma de la ley de glaciares</a></li>
+    <li><a href="https://cai.org.ar/wp-content/uploads/2026/06/JUNIO-CAI-3.pdf" target="_blank" rel="noopener">Secretaría de Minería: potencial minero (junio de 2026)</a></li>
+  </ul>
+</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+function el(h){var d=document.createElement('div');d.innerHTML=h;return d.firstElementChild}
+
+/* ---------- 0. Qué es la megaminería ---------- */
+var scaleData={
+ small:[['Quién','Una familia, una cooperativa o una empresa chica'],['Máquinas','Herramientas simples, a veces una pala o un camión'],['Roca que se mueve','Poca: un pozo o un túnel chico'],['Inversión','Baja comparada con la gran minería']],
+ large:[['Quién','Grandes empresas, muchas veces internacionales'],['Máquinas','Camiones y palas gigantes, y plantas para procesar la roca'],['Roca que se mueve','Millones de toneladas'],['Inversión','Cientos o miles de millones de dólares por proyecto']]
+};
+function showScale(k){
+  [].forEach.call(document.querySelectorAll('#mtBtns .chip'),function(c){c.setAttribute('aria-pressed',String(c.dataset.s===k))});
+  $('#pitSmall').style.opacity=k==='small'?1:0;
+  $('#pitLarge').style.opacity=k==='large'?1:0;
+  var f=$('#mtFacts');f.innerHTML='';
+  scaleData[k].forEach(function(r){
+    var d=el('<div class="fact"><div class="lbl"></div><div></div></div>');
+    d.children[0].textContent=r[0];d.children[1].textContent=r[1];f.appendChild(d)});
+}
+[].forEach.call(document.querySelectorAll('#mtBtns .chip'),function(b){b.onclick=function(){showScale(b.dataset.s)}});
+showScale('large');
+
+var tl=[
+ ['Años 90','Se hacen reformas que facilitan la inversión en minería: menos impuestos, estabilidad fiscal y la posibilidad de resolver conflictos en tribunales internacionales. Desde entonces crece la minería a gran escala, sobre todo a cielo abierto.'],
+ ['2010','Se aprueba la Ley de Glaciares, después de protestas de asambleas y organizaciones ambientales. Protege a los glaciares y su entorno porque son reservas de agua dulce.'],
+ ['2015','En la mina Veladero, en San Juan, una falla en una válvula derrama solución con cianuro y llega a varios ríos. Es uno de los incidentes mineros más graves del país.'],
+ ['2024','Se lanza el RIGI, un régimen con beneficios para proyectos de inversión muy grandes, entre ellos los mineros.'],
+ ['2026','Se sanciona la reforma de la Ley de Glaciares (ley 27.804): la protección pasa a depender de la función hídrica que se pruebe con estudios científicos. Unos dicen que da seguridad para invertir; otros, que abre zonas antes protegidas. El tema también llegó a la justicia.']
+];
+var tlB=$('#tlBtns'),tlO=$('#tlOut');
+function showTl(i){
+  [].forEach.call(tlB.children,function(c,j){c.setAttribute('aria-pressed',String(j===i))});
+  tlO.innerHTML='';
+  var h=document.createElement('h3'),p=document.createElement('p');
+  h.textContent=tl[i][0];p.style.marginTop='6px';p.textContent=tl[i][1];tlO.append(h,p);
+}
+tl.forEach(function(t,i){
+  var b=el('<button class="chip" type="button" aria-pressed="false"></button>');b.textContent=t[0];
+  b.onclick=function(){showTl(i)};tlB.appendChild(b)});
+showTl(0);
+
+/* ---------- 1. Celular en 3D ---------- */
+var minerals={
+ litio:'Litio: Argentina figura entre los países con más recursos del mundo. Se saca sobre todo de los salares, o sea agua salada subterránea que se deja evaporar, y no de un pozo gigante de roca como el oro.',
+ cobre:'Cobre: hoy se produce muy poco en Argentina, pero hay grandes proyectos en la cordillera de San Juan, Catamarca y Mendoza que esperan inversión.',
+ oro:'Oro: junto con la plata, es lo que más dinero trae hoy de la minería metalífera argentina.',
+ plata:'Plata: se saca muchas veces junto con el oro y es clave en paneles solares y electrónica.'
+};
+var MN={litio:'Litio',cobre:'Cobre',oro:'Oro',plata:'Plata'};
+var parts=[
+ {id:'pantalla',n:'Pantalla',m:['cobre'],t:'Es de vidrio, que se hace con arena, y tiene capas finísimas que detectan el toque. Se conecta a la placa con un cable flexible con pistas de cobre.'},
+ {id:'placa',n:'Placa principal',m:['cobre','oro','plata'],t:'Es el cerebro del celular. Las pistas que conectan todo son de cobre, muchos contactos llevan un baño finísimo de oro para que no se oxiden, y la plata aparece en algunas soldaduras y pastas conductoras.'},
+ {id:'bateria',n:'Batería',m:['litio','cobre'],t:'Acá está el litio: la batería de ion de litio guarda la energía que usás todo el día. Por dentro lleva láminas finas de cobre, y muchas baterías también usan cobalto.'},
+ {id:'camara',n:'Cámara',m:['cobre','oro'],t:'El módulo de cámara tiene cables y anillos de cobre. Los sensores se conectan con hilos finísimos, a veces de oro.'},
+ {id:'conector',n:'Conector de carga',m:['oro','cobre'],t:'Es la entrada del cargador. Sus contactos suelen tener una capa de oro, porque no se oxida y conduce muy bien, sobre una base de cobre.'},
+ {id:'carcasa',n:'Carcasa y marco',m:[],t:'Es la cáscara que protege todo: vidrio y un marco que suele ser de aluminio. El aluminio también sale de una mina, se obtiene de la bauxita, pero no es uno de los cuatro minerales de esta actividad.'}
+];
+var partById={};parts.forEach(function(p){partById[p.id]=p});
+var reduce=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var autoOn=!reduce;
+var viewer=$('#viewer'),openBtn=$('#openPhone'),stageEl=$('#stage'),pParts=$('#pParts'),pMins=$('#pMins'),pInfo=$('#pInfo'),autoBtn=$('#pAuto');
+var sel=null,T=null;
+function same(a,b){return !!a&&!!b&&a.t===b.t&&a.id===b.id&&a.k===b.k}
+
+function renderInfo(){
+  pInfo.innerHTML='';
+  if(!sel){
+    var n=document.createElement('p');n.className='note';
+    n.textContent='Girá el celular con el dedo o el mouse. Tocá una parte, o elegí un mineral para ver en qué partes está.';
+    pInfo.appendChild(n);return}
+  var h=document.createElement('h3'),t=document.createElement('p'),w=document.createElement('div');
+  t.style.marginTop='6px';w.style.marginTop='8px';
+  if(sel.t==='p'){
+    var p=partById[sel.id];
+    h.textContent=p.n;t.textContent=p.t;
+    if(p.m.length){p.m.forEach(function(k){var s=document.createElement('span');s.className='tag';s.textContent=MN[k];w.appendChild(s)})}
+    else{var s0=document.createElement('span');s0.className='tag';s0.textContent='Sin litio, cobre, oro ni plata';w.appendChild(s0)}
+    pInfo.append(h,t,w);
+  }else{
+    var k=sel.k;
+    var where=parts.filter(function(p){return p.m.indexOf(k)>-1}).map(function(p){return p.n});
+    h.textContent=MN[k];
+    t.textContent='En el celular está en: '+where.join(', ')+'.';
+    var t2=document.createElement('p');t2.style.marginTop='8px';
+    t2.textContent=minerals[k].replace(/^[^:]+:\s*/,'');
+    pInfo.append(h,t,t2);
+  }
+}
+function highlight(){
+  if(!T||T.dead)return;
+  T.groups.forEach(function(g){
+    var on=true;
+    if(sel){on=sel.t==='p'?sel.id===g.userData.pid:partById[g.userData.pid].m.indexOf(sel.k)>-1}
+    var dim=!!sel&&!on;
+    g.userData.mats.forEach(function(m){
+      m.transparent=dim;m.opacity=dim?0.15:1;m.depthWrite=!dim;
+      if(sel&&on){m.emissive.copy(m.color).multiplyScalar(0.35)}else{m.emissive.setRGB(0,0,0)}
+      m.needsUpdate=true;
+    });
+  });
+}
+function setSel(s){
+  sel=s;
+  [].forEach.call(pParts.children,function(c){c.setAttribute('aria-pressed',String(!!sel&&sel.t==='p'&&sel.id===c.dataset.id))});
+  [].forEach.call(pMins.children,function(c){c.setAttribute('aria-pressed',String(!!sel&&sel.t==='m'&&sel.k===c.dataset.k))});
+  renderInfo();highlight();
+}
+parts.forEach(function(p){
+  var b=el('<button class="chip" type="button" aria-pressed="false"></button>');b.textContent=p.n;b.dataset.id=p.id;
+  b.onclick=function(){var n={t:'p',id:p.id};setSel(same(sel,n)?null:n)};
+  pParts.appendChild(b)});
+Object.keys(MN).forEach(function(k){
+  var b=el('<button class="chip" type="button" aria-pressed="false"></button>');b.textContent=MN[k];b.dataset.k=k;
+  b.onclick=function(){var n={t:'m',k:k};setSel(same(sel,n)?null:n)};
+  pMins.appendChild(b)});
+renderInfo();
+
+function setAuto(v){autoOn=v;autoBtn.setAttribute('aria-pressed',String(v))}
+autoBtn.setAttribute('aria-pressed',String(autoOn));
+autoBtn.onclick=function(){setAuto(!autoOn)};
+$('#pExp').oninput=function(){if(T&&!T.dead)T.eTarget=this.value/100};
+
+function noThree(){
+  T={dead:true};
+  stageEl.insertAdjacentHTML('afterbegin','<p class="note" style="padding:16px">No se pudo cargar la vista 3D en este dispositivo. Usá las partes y los minerales de la derecha para explorar.</p>');
+}
+function buildT(){
+  if(!window.THREE){noThree();return}
+  var renderer;
+  try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true})}catch(err){noThree();return}
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  var canvas=renderer.domElement;
+  stageEl.insertBefore(canvas,stageEl.firstChild);
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(38,1,0.1,100);
+  scene.add(new THREE.AmbientLight(0xffffff,0.8));
+  var d1=new THREE.DirectionalLight(0xffffff,0.9);d1.position.set(4,6,8);scene.add(d1);
+  var d2=new THREE.DirectionalLight(0xffffff,0.4);d2.position.set(-6,-3,-5);scene.add(d2);
+
+  function mk(c,me,ro){return new THREE.MeshStandardMaterial({color:c,metalness:me,roughness:ro})}
+  function pal(){return{cop:mk(0xb4531f,0.9,0.35),gold:mk(0xe0b43c,1,0.25),sil:mk(0xd5dde2,1,0.25),blk:mk(0x1b2226,0.3,0.5)}}
+  function rrTo(p,w,h,r){var x=-w/2,y=-h/2;
+    p.moveTo(x+r,y);p.lineTo(x+w-r,y);p.quadraticCurveTo(x+w,y,x+w,y+r);p.lineTo(x+w,y+h-r);
+    p.quadraticCurveTo(x+w,y+h,x+w-r,y+h);p.lineTo(x+r,y+h);p.quadraticCurveTo(x,y+h,x,y+h-r);
+    p.lineTo(x,y+r);p.quadraticCurveTo(x,y,x+r,y);return p}
+  function slab(w,h,r,d,mat){
+    var g=new THREE.ExtrudeGeometry(rrTo(new THREE.Shape(),w,h,r),{depth:d,bevelEnabled:true,bevelThickness:0.02,bevelSize:0.02,bevelSegments:2,curveSegments:8});
+    g.translate(0,0,-d/2);return new THREE.Mesh(g,mat)}
+  function box(w,h,d,m){return new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m)}
+  var groups=[];
+  function G(id,zc,ze){var g=new THREE.Group();g.userData={pid:id,mats:[],zc:zc,ze:ze};scene.add(g);groups.push(g);return g}
+  function add(g,mesh,x,y,z){mesh.position.set(x||0,y||0,z||0);g.add(mesh);
+    if(g.userData.mats.indexOf(mesh.material)<0)g.userData.mats.push(mesh.material);return mesh}
+
+  /* carcasa y marco */
+  var g=G('carcasa',-0.3,-2.7);
+  add(g,slab(3.4,7,0.45,0.14,mk(0x7d8b94,0.55,0.4)),0,0,0);
+  var shape=rrTo(new THREE.Shape(),3.4,7,0.45);
+  shape.holes.push(rrTo(new THREE.Path(),3.04,6.64,0.36));
+  var fg=new THREE.ExtrudeGeometry(shape,{depth:0.4,bevelEnabled:false,curveSegments:8});fg.translate(0,0,-0.2);
+  add(g,new THREE.Mesh(fg,mk(0x5f6d76,0.7,0.35)),0,0,0.27);
+
+  /* batería (litio) */
+  g=G('bateria',-0.12,-1.7);
+  var pb=pal();
+  add(g,slab(2.7,3.4,0.2,0.22,mk(0x2a9aa4,0.2,0.55)),0,-1.1,0);
+  add(g,box(1.6,0.5,0.02,mk(0xe6eef1,0,0.8)),0,-1.1,0.14);
+  add(g,box(0.5,0.12,0.04,pb.cop),0,0.66,0);
+
+  /* placa principal */
+  g=G('placa',-0.1,-0.95);
+  var pp=pal();
+  add(g,slab(2.7,2.5,0.15,0.08,mk(0x1f6b4a,0.2,0.6)),0,1.9,0);
+  add(g,box(0.8,0.8,0.1,pp.blk),-0.55,2.1,0.09);
+  add(g,box(0.55,0.55,0.08,pp.blk),0.65,2.35,0.08);
+  add(g,box(0.5,0.35,0.06,pp.sil),0.7,1.55,0.07);
+  for(var i=0;i<6;i++)add(g,box(0.12,0.12,0.03,pp.gold),-1.05+i*0.2,1.1,0.06);
+  add(g,box(2.1,0.04,0.01,pp.cop),0,1.35,0.06);
+  add(g,box(0.04,1.2,0.01,pp.cop),1.0,1.9,0.06);
+  add(g,box(1.4,0.04,0.01,pp.cop),-0.3,1.75,0.06);
+
+  /* cámara */
+  g=G('camara',-0.17,-1.9);
+  var pc=pal();
+  add(g,box(1.15,1.15,0.12,pc.blk),-0.75,2.85,0);
+  var lens=mk(0x0c1114,0.8,0.15);
+  [[-0.27,0.25],[0.27,0.25],[0,-0.27]].forEach(function(d){
+    var cy=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,0.14,24),lens);cy.rotation.x=Math.PI/2;
+    add(g,cy,-0.75+d[0],2.85+d[1],-0.09);
+    add(g,new THREE.Mesh(new THREE.TorusGeometry(0.22,0.035,10,28),pc.cop),-0.75+d[0],2.85+d[1],-0.16);
+  });
+  add(g,box(0.1,0.1,0.04,pc.gold),-0.2,3.2,-0.07);
+
+  /* conector de carga */
+  g=G('conector',-0.1,-0.95);
+  var pk=pal();
+  add(g,box(1.3,0.38,0.3,mk(0x9aa7ae,0.8,0.35)),0,-3.15,0);
+  for(var j=0;j<5;j++)add(g,box(0.1,0.2,0.04,pk.gold),-0.4+j*0.2,-3.15,0.17);
+  add(g,box(0.5,0.1,0.06,pk.cop),0,-2.9,0.08);
+
+  /* pantalla */
+  g=G('pantalla',0.05,0.7);
+  add(g,slab(2.96,6.56,0.4,0.1,mk(0x0b1318,0.6,0.15)),0,0,0);
+  add(g,new THREE.Mesh(new THREE.PlaneGeometry(2.8,6.3),mk(0x16394a,0.1,0.3)),0,0,0.075);
+  add(g,new THREE.Mesh(new THREE.CircleGeometry(0.08,16),mk(0x000000,0,1)),0,3.0,0.08);
+  var pcb=pal();
+  add(g,box(0.8,0.05,0.02,pcb.cop),0,-3.12,-0.07);
+
+  var yaw=-0.7,pitch=0.25,zoom=1,tz=-0.8,base=15.5;
+  function cam(){var cp=Math.cos(pitch),d=base*zoom;
+    camera.position.set(Math.sin(yaw)*cp*d,Math.sin(pitch)*d,tz+Math.cos(yaw)*cp*d);camera.lookAt(0,0,tz)}
+  function resize(){
+    var w=stageEl.clientWidth,h=stageEl.clientHeight;if(!w||!h)return;
+    renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
+    base=Math.max(15.5,13/(w/h));cam()}
+  if(window.ResizeObserver)new ResizeObserver(function(){if(T&&T.running)resize()}).observe(stageEl);
+  window.addEventListener('resize',function(){if(T&&T.running)resize()});
+
+  function frame(){
+    if(!T.running)return;
+    T.raf=requestAnimationFrame(frame);
+    if(reduce){T.e=T.eTarget}else{T.e+=(T.eTarget-T.e)*0.12;if(Math.abs(T.eTarget-T.e)<0.001)T.e=T.eTarget}
+    groups.forEach(function(gr){gr.position.z=gr.userData.zc+(gr.userData.ze-gr.userData.zc)*T.e});
+    tz=-0.1-1.1*T.e;
+    if(autoOn&&!T.drag)yaw+=0.004;
+    cam();renderer.render(scene,camera);
+  }
+
+  /* control con dedo / mouse */
+  var ptrs={},start=null,pinch=0,ray=new THREE.Raycaster();
+  function count(){return Object.keys(ptrs).length}
+  function pdist(){var k=Object.keys(ptrs);var a=ptrs[k[0]],b=ptrs[k[1]];return Math.hypot(a.x-b.x,a.y-b.y)}
+  canvas.addEventListener('pointerdown',function(ev){
+    try{canvas.setPointerCapture(ev.pointerId)}catch(e){}
+    ptrs[ev.pointerId]={x:ev.clientX,y:ev.clientY};T.drag=true;
+    if(count()===1)start={x:ev.clientX,y:ev.clientY,t:Date.now(),moved:false};
+    else{start=null;pinch=pdist()}
+  });
+  canvas.addEventListener('pointermove',function(ev){
+    var p=ptrs[ev.pointerId];if(!p)return;
+    var dx=ev.clientX-p.x,dy=ev.clientY-p.y;p.x=ev.clientX;p.y=ev.clientY;
+    if(count()===1){
+      if(start&&Math.hypot(ev.clientX-start.x,ev.clientY-start.y)>6){start.moved=true;setAuto(false)}
+      yaw-=dx*0.008;pitch=Math.max(-1.3,Math.min(1.3,pitch+dy*0.008));
+    }else if(count()===2){
+      var d=pdist();if(pinch>0)zoom=Math.max(0.55,Math.min(1.7,zoom*pinch/d));pinch=d;setAuto(false);
+    }
+  });
+  function up(ev){
+    if(!ptrs[ev.pointerId])return;
+    var wasOne=count()===1;delete ptrs[ev.pointerId];
+    T.drag=count()>0;pinch=0;
+    if(wasOne&&start&&!start.moved&&Date.now()-start.t<500&&ev.type==='pointerup')pick(ev);
+    start=null;
+  }
+  canvas.addEventListener('pointerup',up);canvas.addEventListener('pointercancel',up);
+  stageEl.addEventListener('wheel',function(ev){
+    ev.preventDefault();zoom=Math.max(0.55,Math.min(1.7,zoom*(1+ev.deltaY*0.001)));
+  },{passive:false});
+  function pick(ev){
+    var r=canvas.getBoundingClientRect();
+    ray.setFromCamera(new THREE.Vector2(((ev.clientX-r.left)/r.width)*2-1,-((ev.clientY-r.top)/r.height)*2+1),camera);
+    var hits=ray.intersectObjects(scene.children,true);
+    for(var i=0;i<hits.length;i++){
+      if(hits[i].object.material.opacity<0.5)continue;
+      var o=hits[i].object;while(o&&!(o.userData&&o.userData.pid))o=o.parent;
+      if(o){var n={t:'p',id:o.userData.pid};setSel(same(sel,n)?null:n);return}
+    }
+    setSel(null);
+  }
+
+  T={groups:groups,resize:resize,frame:frame,running:false,raf:0,e:0.7,eTarget:0.7,drag:false};
+}
+var lastOpener=null;
+function openV(from){
+  lastOpener=from||openBtn;
+  viewer.hidden=false;document.documentElement.style.overflow='hidden';
+  if(!T)buildT();
+  if(T&&!T.dead){T.eTarget=$('#pExp').value/100;T.running=true;T.resize();highlight();T.frame()}
+  $('#vClose').focus();
+}
+function closeV(){
+  viewer.hidden=true;document.documentElement.style.overflow='';
+  if(T&&!T.dead){T.running=false;if(T.raf)cancelAnimationFrame(T.raf)}
+  (lastOpener||openBtn).focus({preventScroll:true});
+}
+openBtn.onclick=function(){openV(openBtn)};
+$('#vClose').onclick=closeV;
+document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&!viewer.hidden)closeV()});
+
+/* ---------- 2. Simulador ---------- */
+var metal='oro';
+var tons=$('#tons');
+function fmt(n){return n.toLocaleString('es-AR',{maximumFractionDigits:1})}
+function calc(){
+  var t=+tons.value;$('#tonsVal').textContent=fmt(t);
+  if(metal==='oro'){
+    var g=t*1;
+    $('#metalOut').textContent=fmt(t)+' t de roca → '+fmt(g)+' g de oro';
+    $('#metalLbl').textContent='Oro (1 g por tonelada, que es 0,0001%)';
+    $('#metalNote').textContent='Eso alcanza para unos '+fmt(g/5)+' anillos de 5 g. En la barra el oro sería invisible, por eso se muestra con un mínimo. Valores aproximados: cada mina tiene una ley distinta.';
+    $('#metalBar').style.width='0%';
+  }else{
+    var kg=t*5;
+    $('#metalOut').textContent=fmt(t)+' t de roca → '+fmt(kg)+' kg de cobre';
+    $('#metalLbl').textContent='Cobre (unos 5 kg por tonelada, 0,5%)';
+    $('#metalNote').textContent='Un auto eléctrico usa en el orden de 80 kg de cobre, o sea unas '+fmt(80/5)+' toneladas de roca por auto. Valores aproximados: cada mina es distinta.';
+    $('#metalBar').style.width='0.5%';
+  }
+}
+tons.oninput=calc;
+[].forEach.call(document.querySelectorAll('#metalBtns .chip'),function(b){
+  b.onclick=function(){metal=b.dataset.m;[].forEach.call(document.querySelectorAll('#metalBtns .chip'),function(c){c.setAttribute('aria-pressed',String(c===b))});calc()}
+});
+calc();
+
+var stages=[
+ ['Exploración','Geólogos perforan y analizan muestras para ver si hay suficiente mineral. La mayoría de los proyectos no pasa de acá.','Se discute: cuánta información se hace pública en esta etapa.'],
+ ['Permisos','La empresa presenta un estudio de impacto ambiental y la provincia lo evalúa. Puede haber audiencia pública.','Se discute: si el estudio es claro, si lo revisa alguien independiente y si se mide el efecto de varios proyectos juntos.'],
+ ['Construcción','Se hacen caminos, campamentos, plantas y diques. Se contratan muchas personas por un tiempo limitado.','Se discute: cuánto de ese trabajo es para gente de la zona.'],
+ ['Extracción','Se perfora, se vuela la roca con explosivos y se trasladan millones de toneladas.','Se discute: el polvo, el ruido y el uso de agua.'],
+ ['Procesamiento','La roca se tritura y se separa el metal, con flotación o con una solución química.','Se discute: el manejo de químicos, los diques de residuos y cuánta agua se recicla.'],
+ ['Cierre','Cuando el mineral se acaba, la empresa debe desmontar y recuperar el terreno.','Se discute: quién paga y quién controla que se cumpla durante décadas.']
+];
+var sw=$('#steps'),so=$('#stepOut');
+stages.forEach(function(s,i){
+  var b=el('<button class="chip" aria-pressed="false"></button>');b.textContent=(i+1)+'. '+s[0];
+  b.onclick=function(){
+    [].forEach.call(sw.children,function(c){c.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');
+    so.innerHTML='';var h=document.createElement('h3');h.textContent=s[0];var p=document.createElement('p');p.textContent=s[1];
+    var q=document.createElement('p');q.className='reply';q.textContent=s[2];so.append(h,p,q)};
+  sw.appendChild(b)});
+so.innerHTML='<p class="note">Tocá una etapa para ver qué pasa y qué se discute.</p>';
+
+/* ---------- 3. Juego del gobernador ---------- */
+var M={d:['Plata de la provincia','m-d'],e:['Trabajo','m-e'],a:['Agua y ambiente','m-a'],c:['Confianza del pueblo','m-c']};
+var S;
+var rounds=[
+ {q:'Una empresa pide permiso para una mina de cobre grande en la cordillera. ¿Qué hacés?',o:[
+  ['Apruebo ya con el estudio que presentó la empresa',{d:25,e:15,a:-20,c:-15},'Entra inversión rápido, pero muchos vecinos sienten que no los escucharon.'],
+  ['Apruebo recién después de una audiencia pública y un estudio de una universidad',{d:12,e:10,a:-8,c:10},'Tarda más, pero hay más información sobre la mesa. La empresa se queja de la demora.'],
+  ['Digo que no',{d:-10,e:-5,a:12,c:5},'Cuidás el cerro, pero se va la inversión y quienes esperaban trabajo se frustran.']]},
+ {q:'Pasa un año seco y el río del pueblo baja más de lo normal. ¿Qué hacés?',o:[
+  ['Le pido a la empresa que recicle agua y gaste menos, aunque le cueste más',{d:-5,e:0,a:12,c:8},'La empresa invierte en reciclar. Algunos vecinos lo valoran.'],
+  ['Espero a ver si es pasajero',{d:5,e:0,a:-12,c:-10},'Todo sigue igual, pero crece la desconfianza si el río no se recupera.'],
+  ['Freno la obra hasta medir todo',{d:-12,e:-10,a:15,c:5},'Se miden los datos, pero se pierden semanas de trabajo y de ingresos.']]},
+ {q:'Los vecinos piden que haya trabajo para gente de la zona. ¿Qué hacés?',o:[
+  ['Aprobar una ley que exige un porcentaje de empleo local',{d:-3,e:12,a:0,c:10},'Más gente del pueblo trabaja, aunque la empresa dice que le falta personal capacitado.'],
+  ['Dejar que la empresa contrate a quien quiera',{d:5,e:3,a:0,c:-10},'La empresa contrata rápido, pero muchos puestos van a gente de otras provincias.'],
+  ['Armar una escuela técnica en el pueblo',{d:-5,e:8,a:0,c:8},'Tarda años en dar resultado, pero deja capacidades que sirven aunque la mina cierre.']]},
+ {q:'Llegan regalías mineras a las arcas de la provincia. ¿En qué las usás?',o:[
+  ['Hospital y escuelas',{d:-10,e:3,a:0,c:12},'La gente nota mejoras que se ven en el día a día.'],
+  ['Un fondo para cuando la mina cierre y para otras actividades',{d:8,e:5,a:3,c:3},'Es un ahorro a futuro, pero algunos reclaman resultados ya.'],
+  ['Rutas y obras que necesita la minera',{d:10,e:5,a:-5,c:-5},'Facilita nuevas inversiones, aunque algunos dicen que se favorece a la empresa.']]}
+];
+function clamp(v){return Math.max(0,Math.min(100,v))}
+function drawMeters(){
+  var m=$('#meters');m.innerHTML='';
+  Object.keys(M).forEach(function(k){
+    var d=el('<div class="meter"><label><span></span><span></span></label><div class="bar '+M[k][1]+'"><b></b></div></div>');
+    d.querySelectorAll('span')[0].textContent=M[k][0];d.querySelectorAll('span')[1].textContent=S[k];
+    d.querySelector('b').style.width=S[k]+'%';m.appendChild(d)});
+}
+function round(i){
+  var g=$('#game');g.innerHTML='';
+  if(i>=rounds.length){
+    var ks=Object.keys(M).sort(function(a,b){return S[a]-S[b]});
+    var low=M[ks[0]][0].toLowerCase(),high=M[ks[3]][0].toLowerCase();
+    var h=el('<div class="fb"></div>');
+    h.innerHTML='<h3>Fin del mandato</h3>';
+    var p=document.createElement('p');p.style.marginTop='6px';
+    p.textContent='Tu medidor más alto fue "'+high+'" y el más bajo "'+low+'". Casi nadie logra subir los cuatro a la vez: distintos grupos le dan más peso a cosas distintas, y por eso el tema genera tanta discusión.';
+    h.appendChild(p);g.appendChild(h);
+    var b=el('<button class="btn">Jugar de nuevo</button>');b.onclick=start;g.appendChild(b);return}
+  var r=rounds[i];
+  var q=el('<div><div class="note">Decisión '+(i+1)+' de '+rounds.length+'</div><h3></h3></div>');q.querySelector('h3').textContent=r.q;g.appendChild(q);
+  var wrap=el('<div class="opts"></div>');g.appendChild(wrap);
+  r.o.forEach(function(o){
+    var b=el('<button class="opt"></button>');b.textContent=o[0];
+    b.onclick=function(){
+      Object.keys(o[1]).forEach(function(k){S[k]=clamp(S[k]+o[1][k])});drawMeters();
+      [].forEach.call(wrap.children,function(c){c.disabled=true});b.classList.add('picked');
+      var f=el('<div class="fb"></div>');f.textContent=o[2];g.appendChild(f);
+      var n=el('<button class="btn"></button>');n.textContent=i+1<rounds.length?'Siguiente decisión':'Ver resultado';
+      n.onclick=function(){round(i+1)};g.appendChild(n);n.focus()};
+    wrap.appendChild(b)});
+}
+function start(){S={d:50,e:50,a:50,c:50};drawMeters();round(0)}
+start();
+
+/* ---------- 6. Escape room ---------- */
+var escBox=$('#esc');
+var E={i:-1,keys:[],hints:0,t0:0,found:false};
+function num(v){return parseFloat(String(v).replace(',','.'))}
+function numPuzzle(box,label,answer,okFn){
+  var row=el('<div class="row" style="align-items:center"></div>');
+  var lb=el('<label style="font-weight:700"></label>');lb.textContent=label;
+  var inp=el('<input class="inp" type="text" inputmode="decimal" autocomplete="off">');
+  var b=el('<button class="btn" type="button">Probar</button>');
+  var msg=el('<p class="no" aria-live="polite"></p>');
+  function go(){if(num(inp.value)===answer){okFn()}else{msg.textContent='Todavía no. Probá de nuevo o pedí una pista.'}}
+  b.onclick=go;inp.onkeydown=function(e){if(e.key==='Enter')go()};
+  row.append(lb,inp,b);box.append(row,msg);
+}
+var rooms=[
+ {n:'Sala 1: el túnel de la roca',key:'4',
+  story:'La puerta se cierra detrás de vos y la linterna del casco parpadea. En la pared hay un cartel: "En esta mina sale 1 gramo de oro por cada tonelada de roca". Sobre una mesa hay un anillo de oro de 5 gramos. ¿Cuántas toneladas de roca hubo que mover para sacar el oro de ese anillo?',
+  hint:'Si de cada tonelada sale 1 gramo, para 5 gramos necesitás 5 veces esa cantidad de roca. Podés probarlo en el simulador de la actividad 2.',
+  after:'El cartel se desliza y detrás aparece un papel con una cifra. Por eso las mineras de oro mueven tanta roca para sacar tan poco metal.',
+  build:function(box,ok){numPuzzle(box,'Toneladas de roca:',5,ok)}},
+ {n:'Sala 2: el celular desarmado',key:'1',
+  story:'Una pantalla vieja muestra un celular abierto, pero se apagó. Abrilo en 3D, tocá la placa principal y contá cuántos de los cuatro minerales (litio, cobre, oro y plata) lleva.',
+  hint:'En el visor 3D tocá la parte "Placa principal" y mirá las etiquetas de minerales que aparecen abajo.',
+  after:'La placa se ilumina un segundo: cobre, oro y plata. El litio estaba en otra parte, la batería. Se abre un cajón con una llave numerada.',
+  build:function(box,ok){
+    var b=el('<button class="btn ghost" type="button" style="justify-self:start">Abrir el celular en 3D</button>');
+    b.onclick=function(){openV(b)};
+    box.appendChild(b);
+    numPuzzle(box,'Minerales en la placa:',partById.placa.m.length,ok)}},
+ {n:'Sala 3: el archivo de las leyes',key:'8',
+  story:'Los papeles de un archivo están desparramados. Ordenalos del hecho más viejo al más nuevo tocándolos en ese orden.',
+  hint:'Mirá la línea de tiempo de la sección "Cómo llegamos hasta acá", al principio de la página.',
+  after:'Los papeles se ordenan solos y en el último hay una cifra grabada. Cada hecho cambió de qué se discutía: primero la protección, después el accidente, las inversiones y la reforma.',
+  build:function(box,ok){
+    var items=[['Reforma de la Ley de Glaciares (2026)',3],['Ley de Glaciares original (2010)',0],['Derrame en Veladero (2015)',1],['Lanzamiento del RIGI (2024)',2]];
+    var seq=[],btns=[];
+    var row=el('<div class="row"></div>');
+    var out=el('<p class="seq" aria-live="polite"></p>');
+    var msg=el('<p class="no" aria-live="polite"></p>');
+    var rs=el('<button class="chip" type="button" style="justify-self:start">Empezar de nuevo</button>');
+    function reset(){seq=[];btns.forEach(function(b){b.disabled=false});out.textContent='Tu orden: (todavía vacío)'}
+    items.forEach(function(it){
+      var b=el('<button class="chip" type="button"></button>');b.textContent=it[0];btns.push(b);
+      b.onclick=function(){
+        b.disabled=true;seq.push(it[1]);msg.textContent='';
+        out.textContent='Tu orden: '+seq.map(function(n){return ['2010','2015','2024','2026'][n]}).join(' → ');
+        if(seq.length===4){
+          if(seq.join('')==='0123'){ok()}
+          else{msg.textContent='Ese orden no es. Se desordenaron los papeles, probá de nuevo.';reset()}
+        }};
+      row.appendChild(b)});
+    rs.onclick=function(){msg.textContent='';reset()};
+    reset();box.append(row,out,msg,rs)}},
+ {n:'Sala 4: la sala de las cifras',key:'6',
+  story:'En la última sala hay dos informes pegados en la pared. El Informe A dice: "La minería da 19.011 empleos". El Informe B dice: "La minería da más de 120.000 puestos". ¿Cuál es la explicación más probable de que no coincidan?',
+  hint:'Una cifra puede incluir cosas que la otra no. Pensá en empleo directo e indirecto.',
+  after:'Los dos informes podían tener razón: cada uno contaba algo distinto. Es la lección más importante: mirá siempre qué cuenta cada cifra y de qué año es.',
+  build:function(box,ok){
+    var msg=el('<p class="no" aria-live="polite"></p>');
+    var w=el('<div class="opts"></div>');
+    [['Uno de los dos inventó el dato',false],['Cuentan cosas distintas, por ejemplo empleo directo o también indirecto',true],['Hablan de países distintos',false]].forEach(function(o){
+      var b=el('<button class="opt" type="button"></button>');b.textContent=o[0];
+      b.onclick=function(){if(o[1]){ok()}else{msg.textContent='No parece. Fijate qué podría estar contando cada informe.'}};
+      w.appendChild(b)});
+    box.append(w,msg)}}
+];
+function hintUI(text){
+  var b=el('<button class="chip" type="button" style="justify-self:start">Pedir pista</button>');
+  var h=el('<p class="reply" hidden></p>');h.textContent=text;
+  b.onclick=function(){if(h.hidden){h.hidden=false;E.hints++}};
+  escBox.append(b,h);
+}
+function fmtT(ms){var s=Math.round(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function renderEsc(){
+  escBox.innerHTML='';
+  var head=el('<div class="row" style="justify-content:space-between;align-items:center"></div>');
+  var lab=el('<div class="lbl"></div>');
+  lab.textContent=E.i<0?'Antes de entrar':(E.i<4?'Sala '+(E.i+1)+' de 4':(E.i===4?'La puerta':'Escapaste'));
+  var dots=el('<div class="dots" role="img" aria-label="Progreso"></div>');
+  for(var d=0;d<5;d++){dots.appendChild(el('<span class="'+(d<E.i||(d===E.i&&E.found)?'dot on':(d===E.i?'dot cur':'dot'))+'"></span>'))}
+  head.append(lab,dots);escBox.appendChild(head);
+  var pk=el('<div class="row" style="align-items:center"><span class="lbl">Mochila</span></div>');
+  if(!E.keys.length)pk.appendChild(el('<span class="note">vacía</span>'));
+  E.keys.forEach(function(k,j){var t=el('<span class="tag"></span>');t.textContent='Llave '+(j+1)+': '+k;pk.appendChild(t)});
+  escBox.appendChild(pk);
+  if(E.i<0)intro();else if(E.found)foundCard();else if(E.i<4)room(E.i);else if(E.i===4)door();else win();
+  updateE();
+}
+function intro(){
+  var st=el('<div class="story"></div>');
+  st.textContent='Te quedaste explorando una mina y se cerró la salida. Para abrir el candado hace falta un código de 4 cifras, y las cifras están repartidas en cuatro salas. Podés pedir pistas, pero cuantas menos uses, mejor es tu rango final.';
+  var b=el('<button class="btn" type="button" style="justify-self:start">Entrar a la mina</button>');
+  b.onclick=function(){E.i=0;E.t0=Date.now();renderEsc()};
+  escBox.append(st,b);
+}
+function room(i){
+  var r=rooms[i];
+  var h=el('<h3></h3>');h.textContent=r.n;
+  var st=el('<div class="story"></div>');st.textContent=r.story;
+  var box=el('<div style="display:grid;gap:10px"></div>');
+  escBox.append(h,st,box);
+  r.build(box,function(){E.keys.push(r.key);E.found=true;renderEsc()});
+  hintUI(r.hint);
+}
+function foundCard(){
+  var r=rooms[E.i];
+  var h=el('<h3></h3>');h.textContent='Sala resuelta';
+  var st=el('<div class="story"></div>');st.textContent=r.after+' Guardaste la llave '+(E.i+1)+': '+r.key+'.';
+  var b=el('<button class="btn" type="button" style="justify-self:start"></button>');
+  b.textContent=E.i<3?'Ir a la siguiente sala':'Ir a la puerta';
+  b.onclick=function(){E.found=false;E.i++;renderEsc()};
+  escBox.append(h,st,b);
+}
+function door(){
+  var h=el('<h3></h3>');h.textContent='La puerta de salida';
+  var st=el('<div class="story"></div>');
+  st.textContent='Llegás a una puerta con un candado de 4 cifras. Un cartel dice: "Para salir, de adentro hacia afuera". Escribí el código con las llaves de tu mochila.';
+  var row=el('<div class="row" style="align-items:center"></div>');
+  var inp=el('<input class="inp code" type="text" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="Código de 4 cifras">');
+  var b=el('<button class="btn" type="button">Abrir</button>');
+  var msg=el('<p class="no" aria-live="polite"></p>');
+  var code=E.keys.slice().reverse().join('');
+  function go(){if(inp.value.trim()===code){E.i=5;E.tEnd=Date.now();renderEsc()}else{msg.textContent='El candado no se abre. Revisá el cartel y el orden de las llaves.'}}
+  b.onclick=go;inp.onkeydown=function(e){if(e.key==='Enter')go()};
+  row.append(inp,b);escBox.append(h,st,row,msg);
+  hintUI('Adentro es la última sala que visitaste. Empezá por la llave 4 y terminá con la llave 1.');
+}
+function win(){
+  var rank=E.hints===0?'Ingeniero o ingeniera de minas':(E.hints<=2?'Geólogo o geóloga':'Explorador o exploradora');
+  var h=el('<h3></h3>');h.textContent='¡Salís a la luz del día!';
+  var st=el('<div class="story"></div>');
+  st.textContent='Tiempo: '+fmtT(E.tEnd-E.t0)+'. Pistas usadas: '+E.hints+'. Tu rango: '+rank+'.';
+  var ul=el('<ul class="clean"></ul>');
+  ['En una mina de oro típica hay que mover muchísima roca para sacar muy poco metal.','Un celular tiene cobre, oro, plata y litio en distintas partes.','Las leyes y los accidentes fueron cambiando el debate sobre la minería.','Dos cifras que no coinciden pueden contar cosas distintas.'].forEach(function(t){var li=document.createElement('li');li.textContent=t;ul.appendChild(li)});
+  var b=el('<button class="btn" type="button" style="justify-self:start">Jugar de nuevo</button>');
+  b.onclick=function(){E={i:-1,keys:[],hints:0,t0:0,found:false};renderEsc()};
+  escBox.append(h,st,el('<div class="lbl">Lo que descubriste</div>'),ul,b);
+}
+/* ---------- 6b. Escape en 3D ---------- */
+var X=null,eView=$('#eViewer'),eStage=$('#eStage'),eCap=$('#eCap'),eOpenBtn=$('#openEsc'),capT=0,phoneWasOpen=false;
+function updateE(){
+  if(!X||X.dead)return;
+  var i=E.i<0?-1:Math.min(E.i,4);
+  X.goalZ=i<0?9:(i<4?-14*i+5.5:-50.5);
+  X.keysShown=E.keys.length;
+  X.open=E.i===5;
+  X.reset=true;
+  X.pad(X.open?['ABIERTO']:['CÓDIGO','· · · ·'],X.open);
+}
+function capText(msg){
+  eCap.textContent=msg;eCap.hidden=false;clearTimeout(capT);
+  capT=setTimeout(function(){eCap.hidden=true},5200);
+}
+function noX(){
+  X={dead:true};
+  eStage.insertAdjacentHTML('afterbegin','<p class="note" style="padding:16px">No se pudo cargar la vista 3D en este dispositivo. Podés jugar igual con el panel de la derecha.</p>');
+}
+var captions={
+  sign:'Cartel de la mina: sale 1 gramo de oro por cada tonelada de roca.',
+  ring:'Un anillo de oro de 5 gramos.',
+  rocks:'Un carro lleno de roca. La mayor parte no tiene metal.',
+  phone:'Un celular desarmado. Adentro hay litio, cobre, oro y plata.',
+  papers:'Papeles de un archivo: leyes, un derrame y un régimen de inversiones.',
+  boards:'Dos informes con cifras de empleo que no coinciden.',
+  door:'La puerta de salida, con un candado de 4 cifras.',
+  pad:'El candado se abre con las llaves de las cuatro salas.'
+};
+function buildX(){
+  if(!window.THREE){noX();return}
+  var renderer;
+  try{renderer=new THREE.WebGLRenderer({antialias:true})}catch(err){noX();return}
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  var canvas=renderer.domElement;
+  eStage.insertBefore(canvas,eStage.firstChild);
+  var scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x0b1318);
+  scene.fog=new THREE.Fog(0x0b1318,14,46);
+  var camera=new THREE.PerspectiveCamera(60,1,0.1,80);
+  scene.add(camera);
+  scene.add(new THREE.AmbientLight(0x8fa6b2,0.6));
+  var head=new THREE.PointLight(0xffe2b0,0.9,14);head.position.set(0,0.4,0);camera.add(head);
+
+  function mat(c,me,ro,em){var m=new THREE.MeshStandardMaterial({color:c,metalness:me,roughness:ro});if(em!==undefined)m.emissive=new THREE.Color(em);return m}
+  function bx(w,h,d,m,x,y,z,p){var o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);(p||scene).add(o);return o}
+  function G(x,y,z,p){var g=new THREE.Group();g.position.set(x,y,z);(p||scene).add(g);return g}
+  var seed=7;function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647}
+  var rock=mat(0x4a5a64,0.05,0.95),rock2=mat(0x3b4a53,0.05,0.95),wood=mat(0x6b4a2b,0,0.8),metal=mat(0x8a979e,0.8,0.4),
+      gold=mat(0xe0b43c,1,0.25,0x3a2a00),cop=mat(0xb4531f,0.8,0.4),dark=mat(0x1b2226,0.3,0.5);
+
+  function labelTex(lines,w,h,bg,fg){
+    var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');
+    x.fillStyle=bg;x.fillRect(0,0,w,h);x.strokeStyle=fg;x.lineWidth=Math.max(4,w/90);x.strokeRect(10,10,w-20,h-20);
+    x.fillStyle=fg;x.textAlign='center';x.textBaseline='middle';
+    var rows=[];
+    lines.forEach(function(l){
+      x.font=(l.b?'700 ':'500 ')+l.s+'px "DM Sans",Arial,sans-serif';
+      var words=l.t.split(' '),cur='';
+      words.forEach(function(wd){var test=cur?cur+' '+wd:wd;if(x.measureText(test).width>w-60&&cur){rows.push([cur,l]);cur=wd}else cur=test});
+      rows.push([cur,l]);
+    });
+    var tot=0;rows.forEach(function(r){tot+=r[1].s*1.25});
+    var y=(h-tot)/2;
+    rows.forEach(function(r){x.font=(r[1].b?'700 ':'500 ')+r[1].s+'px "DM Sans",Arial,sans-serif';y+=r[1].s*0.625;x.fillText(r[0],w/2,y);y+=r[1].s*0.625});
+    var t=new THREE.CanvasTexture(c);t.anisotropy=4;return t}
+  function lbl(tex){return new THREE.MeshStandardMaterial({map:tex,emissiveMap:tex,emissive:new THREE.Color(0xffffff),emissiveIntensity:0.6,roughness:0.9})}
+  function plane(w,h,tex,x,y,z,p){var o=new THREE.Mesh(new THREE.PlaneGeometry(w,h),lbl(tex));o.position.set(x,y,z);(p||scene).add(o);return o}
+  function prop(name,g){g.traverse(function(o){o.userData.pn=name;o.userData.rg=g});return g}
+
+  /* túnel */
+  bx(10,0.2,70,mat(0x3a464e,0,1),0,-0.1,-28);
+  bx(0.4,4.6,70,rock,-5,2.2,-28);
+  bx(0.4,4.6,70,rock,5,2.2,-28);
+  bx(10,0.4,70,rock2,0,4.4,-28);
+  for(var z=6;z>-63;z-=3.2){[-1,1].forEach(function(s){
+    var r=0.35+rnd()*0.55;
+    var m=new THREE.Mesh(new THREE.DodecahedronGeometry(r,0),rnd()>0.5?rock:rock2);
+    m.position.set(s*(4.35+rnd()*0.3),r*0.6,z+rnd()*1.5);m.rotation.set(rnd()*3,rnd()*3,rnd()*3);scene.add(m)})}
+  for(var zb=3.5;zb>-63;zb-=7){
+    bx(0.3,4.2,0.3,wood,-4.5,2.1,zb);bx(0.3,4.2,0.3,wood,4.5,2.1,zb);bx(9.3,0.3,0.3,wood,0,4.0,zb)}
+  [1,-11,-25,-39,-53].forEach(function(lz){
+    bx(0.04,0.5,0.04,metal,0,4.0,lz);
+    bx(0.3,0.3,0.3,mat(0xffb866,0,0.6,0xffa040),0,3.7,lz);
+    var pl=new THREE.PointLight(0xffb866,1.0,15);pl.position.set(0,3.4,lz);scene.add(pl)});
+
+  /* pared del fondo con la puerta */
+  bx(3.5,4.2,0.4,rock,-3.25,2.1,-63);bx(3.5,4.2,0.4,rock,3.25,2.1,-63);bx(3,0.8,0.4,rock,0,3.8,-63);
+  var glow=new THREE.Mesh(new THREE.PlaneGeometry(3,3.4),new THREE.MeshBasicMaterial({color:0xfff1c2}));
+  glow.position.set(0,1.7,-63.15);scene.add(glow);
+  var doorLight=new THREE.PointLight(0xfff1c2,0,14);doorLight.position.set(0,2,-60);scene.add(doorLight);
+  var door=G(0,1.7,-62.8);
+  bx(3,3.4,0.2,mat(0x6b7a83,0.9,0.35),0,0,0,door);
+  bx(3.02,0.18,0.22,cop,0,-0.9,0,door);bx(3.02,0.18,0.22,cop,0,0.9,0,door);
+  bx(0.12,0.5,0.1,gold,1.1,0,0.14,door);
+  prop('door',door);
+  var pc=document.createElement('canvas');pc.width=256;pc.height=144;var px=pc.getContext('2d');
+  var padTex=new THREE.CanvasTexture(pc);
+  function pad(lines,ok){
+    var col=ok?'#58C58F':'#EE8E5F';
+    px.fillStyle='#0b1318';px.fillRect(0,0,256,144);px.strokeStyle=col;px.lineWidth=6;px.strokeRect(6,6,244,132);
+    px.fillStyle=col;px.textAlign='center';px.textBaseline='middle';
+    px.font='700 26px Arial,sans-serif';px.fillText(lines[0],128,lines.length>1?46:72);
+    if(lines[1]){px.font='700 40px Arial,sans-serif';px.fillText(lines[1],128,98)}
+    padTex.needsUpdate=true}
+  pad(['CÓDIGO','· · · ·'],false);
+  var padG=G(3.1,1.7,-62.72);
+  bx(1.5,0.9,0.08,dark,0,0,0,padG);
+  var pm=new THREE.Mesh(new THREE.PlaneGeometry(1.4,0.8),new THREE.MeshBasicMaterial({map:padTex}));pm.position.z=0.05;padG.add(pm);
+  prop('pad',padG);
+
+  function tableAt(x,z,w,d){
+    var g=G(x,0,z);bx(w,0.12,d,wood,0,0.9,0,g);
+    [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(s){bx(0.12,0.84,0.12,wood,s[0]*(w/2-0.1),0.42,s[1]*(d/2-0.1),g)});
+    return g}
+  function crate(x,y,z,s){bx(s,s,s,wood,x,y+s/2,z);}
+
+  /* Sala 1: cartel, anillo y carro de roca */
+  var sg=G(0,0,-3.5);
+  bx(3.2,1.3,0.08,dark,0,3.1,0,sg);
+  plane(3.0,1.1,labelTex([{t:'1 g de oro',s:56,b:1},{t:'por cada tonelada de roca',s:34}],512,190,'#1b2226','#e0b43c'),0,3.1,0.05,sg);
+  bx(0.05,0.55,0.05,metal,-1.3,3.98,0,sg);bx(0.05,0.55,0.05,metal,1.3,3.98,0,sg);
+  prop('sign',sg);
+  var t1=tableAt(-2.4,-3.2,2.2,1.1);
+  var rg=G(0,1.16,0,t1);
+  bx(0.55,0.06,0.4,dark,0,-0.14,0,rg);
+  rg.add(new THREE.Mesh(new THREE.TorusGeometry(0.17,0.05,14,32),gold));
+  prop('ring',rg);
+  var cg=G(2.4,0,-3.2);
+  bx(1.8,0.7,1.1,mat(0x45545c,0.7,0.5),0,0.7,0,cg);
+  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(s){
+    var w=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.22,0.1,16),dark);w.rotation.z=Math.PI/2;
+    w.position.set(s[0]*0.85,0.22,s[1]*0.5);cg.add(w)});
+  [[-0.5,0.2],[0.1,-0.15],[0.55,0.2],[-0.1,0.25],[0.3,0.05]].forEach(function(p,k){
+    var r=new THREE.Mesh(new THREE.DodecahedronGeometry(0.28,0),k===1?cop:(k===3?gold:rock));
+    r.position.set(p[0],1.15+(k%2)*0.1,p[1]);r.rotation.set(k,k*2,k*3);cg.add(r)});
+  prop('rocks',cg);
+
+  /* Sala 2: celular desarmado */
+  var t2=tableAt(2.3,-17.5,2.4,1.3);
+  var phg=G(0,0.99,0,t2);
+  bx(0.55,0.05,1.1,dark,0,0.03,0,phg);
+  bx(0.48,0.01,0.98,mat(0x2a9aa4,0.1,0.3,0x0e4a52),0,0.06,0,phg);
+  phg.rotation.y=0.45;
+  prop('phone',phg);
+  crate(-2.7,0,-17.2,1.1);crate(-2.3,0,-16.2,0.8);crate(-2.7,1.1,-17.2,0.7);
+
+  /* Sala 3: papeles del archivo */
+  var eg=G(-2.4,0,-31);
+  bx(4.1,2.5,0.1,mat(0x5a4632,0,0.85),0,1.9,0,eg);
+  bx(0.1,1.4,0.1,wood,-1.8,0.7,0.1,eg);bx(0.1,1.4,0.1,wood,1.8,0.7,0.1,eg);
+  [['Reforma de la Ley de Glaciares',-1.4],['Ley de Glaciares original',-0.47],['Derrame en Veladero',0.47],['Lanzamiento del RIGI',1.4]].forEach(function(p){
+    var pg=G(p[1],1.9,0.07,eg);
+    plane(0.85,1.1,labelTex([{t:p[0],s:34,b:1}],256,330,'#efe9d8','#222222'),0,0,0,pg);
+    prop('papers',pg)});
+  tableAt(2.5,-31,1.8,1.0);crate(2.5,0.96,-31,0.4);
+
+  /* Sala 4: los dos informes */
+  var bA=G(-2.6,0,-46),bB=G(2.6,0,-46);
+  [[bA,[{t:'INFORME A',s:44,b:1},{t:'La minería da',s:36},{t:'19.011 empleos',s:60,b:1}],0.25],
+   [bB,[{t:'INFORME B',s:44,b:1},{t:'La minería da',s:36},{t:'más de 120.000 puestos',s:52,b:1}],-0.25]].forEach(function(d){
+    var g=d[0];
+    bx(0.12,1.6,0.12,wood,-1.35,0.8,0,g);bx(0.12,1.6,0.12,wood,1.35,0.8,0,g);
+    bx(3.2,2.3,0.1,dark,0,2.2,0,g);
+    plane(3.0,2.1,labelTex(d[1],512,360,'#17252d','#EE8E5F'),0,2.2,0.06,g);
+    g.rotation.y=d[2];prop('boards',g)});
+
+  /* llaves que aparecen al resolver cada sala */
+  var keys=[];
+  for(var j=0;j<4;j++){
+    var kg=G(0,2.3,-14*j-0.5);
+    var kr=new THREE.Mesh(new THREE.TorusGeometry(0.17,0.055,12,24),gold);kr.position.y=0.38;kg.add(kr);
+    bx(0.09,0.7,0.07,gold,0,0,0,kg);bx(0.2,0.1,0.07,gold,0.12,-0.25,0,kg);bx(0.14,0.1,0.07,gold,0.1,-0.07,0,kg);
+    kg.scale.setScalar(0.0001);kg.visible=false;keys.push(kg)}
+
+  X={dead:false,running:false,raf:0,z:9,goalZ:9,yaw:0,pitch:-0.04,drag:false,reset:false,keysShown:0,open:false,pad:pad,pulses:[]};
+
+  function resize(){
+    var w=eStage.clientWidth,h=eStage.clientHeight;if(!w||!h)return;
+    renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+  if(window.ResizeObserver)new ResizeObserver(function(){if(X&&X.running)resize()}).observe(eStage);
+  window.addEventListener('resize',function(){if(X&&X.running)resize()});
+  X.resize=resize;
+
+  function frame(){
+    if(!X.running)return;
+    X.raf=requestAnimationFrame(frame);
+    var t=performance.now()/1000;
+    var dz=X.goalZ-X.z;
+    X.z+=reduce?dz:dz*0.035;if(Math.abs(dz)<0.01)X.z=X.goalZ;
+    var walk=reduce?0:Math.min(1,Math.abs(X.goalZ-X.z)/3);
+    camera.position.set(0,1.7+Math.sin(t*9)*0.035*walk,X.z);
+    if(X.reset&&!X.drag){
+      X.yaw+=(0-X.yaw)*0.06;X.pitch+=(-0.04-X.pitch)*0.06;
+      if(Math.abs(X.yaw)<0.005&&Math.abs(X.pitch+0.04)<0.005)X.reset=false}
+    camera.rotation.set(X.pitch,X.yaw,0,'YXZ');
+    keys.forEach(function(g,j){
+      var want=j<X.keysShown?1.0:0.0001;
+      var s=g.scale.x+(want-g.scale.x)*(reduce?1:0.08);
+      g.scale.setScalar(Math.max(0.0001,s));g.visible=s>0.02;
+      g.rotation.y=reduce?0.5:t*1.5;g.position.y=2.3+(reduce?0:Math.sin(t*2+j)*0.08)});
+    door.position.y+=((X.open?5.3:1.7)-door.position.y)*(reduce?1:0.03);
+    doorLight.intensity+=((X.open?1.6:0)-doorLight.intensity)*(reduce?1:0.05);
+    X.pulses=X.pulses.filter(function(p){
+      var age=t-p.t0;
+      if(age>0.5){p.g.scale.setScalar(1);return false}
+      p.g.scale.setScalar(1+0.15*Math.sin(age/0.5*Math.PI));return true});
+    renderer.render(scene,camera);
+  }
+  X.frame=frame;
+
+  /* control con dedo / mouse */
+  var ptrs={},start=null,ray=new THREE.Raycaster();
+  function count(){return Object.keys(ptrs).length}
+  canvas.addEventListener('pointerdown',function(ev){
+    try{canvas.setPointerCapture(ev.pointerId)}catch(e){}
+    ptrs[ev.pointerId]={x:ev.clientX,y:ev.clientY};X.drag=true;X.reset=false;
+    start=count()===1?{x:ev.clientX,y:ev.clientY,t:Date.now(),moved:false}:null;
+  });
+  canvas.addEventListener('pointermove',function(ev){
+    var p=ptrs[ev.pointerId];if(!p)return;
+    var dx=ev.clientX-p.x,dy=ev.clientY-p.y;p.x=ev.clientX;p.y=ev.clientY;
+    if(start&&Math.hypot(ev.clientX-start.x,ev.clientY-start.y)>6)start.moved=true;
+    X.yaw=Math.max(-1.3,Math.min(1.3,X.yaw+dx*0.006));
+    X.pitch=Math.max(-0.6,Math.min(0.5,X.pitch+dy*0.006));
+  });
+  function up(ev){
+    if(!ptrs[ev.pointerId])return;
+    var wasOne=count()===1;delete ptrs[ev.pointerId];X.drag=count()>0;
+    if(wasOne&&start&&!start.moved&&Date.now()-start.t<500&&ev.type==='pointerup')pick(ev);
+    start=null;
+  }
+  canvas.addEventListener('pointerup',up);canvas.addEventListener('pointercancel',up);
+  function pick(ev){
+    var r=canvas.getBoundingClientRect();
+    ray.setFromCamera(new THREE.Vector2(((ev.clientX-r.left)/r.width)*2-1,-((ev.clientY-r.top)/r.height)*2+1),camera);
+    var hits=ray.intersectObjects(scene.children,true);
+    for(var i=0;i<hits.length;i++){
+      var o=hits[i].object;
+      if(!o.visible||!o.userData.pn)continue;
+      var n=o.userData.pn;
+      if(n==='phone'&&E.i===1&&!E.found){openV($('#eClose'));return}
+      capText(captions[n]);
+      if(n!=='door'&&n!=='pad')X.pulses.push({g:o.userData.rg,t0:performance.now()/1000});
+      return}
+  }
+  updateE();
+}
+function openX(){
+  eView.hidden=false;document.documentElement.style.overflow='hidden';
+  if(!X)buildX();
+  if(X&&!X.dead){X.running=true;X.resize();updateE();X.frame()}
+  $('#eClose').focus();
+}
+function closeX(){
+  eView.hidden=true;document.documentElement.style.overflow='';
+  if(X&&!X.dead){X.running=false;if(X.raf)cancelAnimationFrame(X.raf)}
+  eOpenBtn.focus({preventScroll:true});
+}
+eOpenBtn.onclick=openX;
+$('#eClose').onclick=closeX;
+document.addEventListener('keydown',function(){phoneWasOpen=!viewer.hidden},true);
+document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&!eView.hidden&&!phoneWasOpen)closeX()});
+
+/* ---------- 7. Mina en marcha ---------- */
+var mgBox=$('#mg'),MG={};
+var MGU=[
+ {k:'truck',n:'Camión más grande',d:'+6 toneladas por segundo. Gasta más agua y baja la confianza.',max:8,cost:function(n){return Math.round(40*Math.pow(1.5,n))},fx:function(){MG.tps+=6}},
+ {k:'rec',n:'Reciclar agua',d:'Se usa menos agua por tonelada y se repone un poco.',max:3,cost:function(n){return 60+50*n},fx:function(){MG.mult*=0.7;MG.agua=Math.min(100,MG.agua+10)}},
+ {k:'loc',n:'Contratar gente del pueblo',d:'Sube la confianza y ayuda a que se mantenga.',max:3,cost:function(n){return 80+60*n},fx:function(){MG.conf=Math.min(100,MG.conf+6)}},
+ {k:'est',n:'Estudio ambiental independiente',d:'Sube la confianza ahora.',max:2,cost:function(n){return 90+70*n},fx:function(){MG.conf=Math.min(100,MG.conf+10)}}
+];
+var MGE=[
+ {m:3,t:'Año seco',q:'El río baja más de lo normal y la mina necesita agua.',o:[['Pagar camiones cisterna y reducir el uso',{m:-30,a:15,c:0},'Gastás plata, pero el agua se recupera un poco.'],['Seguir igual y esperar a que llueva',{m:0,a:-15,c:-5},'No gastás, pero el río sigue bajando y los vecinos lo notan.']]},
+ {m:6,t:'Asamblea vecinal',q:'Los vecinos piden ver el estudio ambiental completo.',o:[['Publicarlo y responder preguntas',{m:-20,a:0,c:12},'Perdés tiempo y plata, pero hay más confianza.'],['Decir que ya está aprobado y seguir',{m:0,a:0,c:-12},'Seguís sin demoras, pero crece la desconfianza.']]},
+ {m:9,t:'Falla en un dique',q:'Se detecta una pérdida en el dique de residuos.',o:[['Frenar y repararlo ya',{m:-40,a:0,c:5},'Cuesta plata, pero el problema no crece.'],['Postergar la reparación',{m:0,a:-20,c:-15},'Seguís produciendo, pero el agua y la confianza sufren.']]},
+ {t:'Camión averiado',q:'Se rompe un camión grande en plena temporada.',o:[['Repararlo ya',{m:-25,a:0,c:0},'Perdés plata, pero el equipo sigue trabajando.'],['Seguir sin él por ahora',{m:0,a:0,c:-5},'Se atrasa la producción y un grupo de trabajadores se queja.']]},
+ {t:'Pedido del sindicato',q:'Piden que contrates más gente de la zona.',o:[['Aceptar y armar un plan de empleo local',{m:-20,a:0,c:10},'Cuesta plata, pero el pueblo lo valora.'],['Decir que no hace falta',{m:0,a:0,c:-8},'Ahorrás, pero crece el malestar.']]},
+ {t:'Inspección de la provincia',q:'Llegan inspectores a revisar la mina.',o:[['Mostrar todos los registros',{m:-15,a:0,c:10},'Tarda y cuesta, pero gana credibilidad.'],['Entregar solo lo mínimo',{m:0,a:0,c:-10},'Es rápido, pero genera sospechas.']]},
+ {t:'Lluvia fuerte',q:'Llueve bien y el río sube.',o:[['Guardar agua en reservorios',{m:-15,a:20,c:0},'Invertís plata y quedás con más agua.'],['Acelerar la producción',{m:30,a:-5,c:0},'Ganás plata ahora, sin guardar nada para después.']]}
+];
+function mgClamp(v){return Math.max(0,Math.min(100,v))}
+function mgPanel(){
+  var p=MG.el.panel;p.innerHTML='';
+  [].slice.call(arguments).forEach(function(n){p.appendChild(n)});
+}
+function mgStart(){
+  MG={t:0,m:0,agua:100,conf:60,month:0,clock:0,tps:4,evs:MGE.slice().sort(function(){return Math.random()-0.5}).slice(0,5).map(function(e,i){var c=Object.assign({},e);c.m=2*(i+1);return c}),mult:1,run:false,over:false,ev:null,done:{},up:{truck:0,rec:0,loc:0,est:0}};
+  mgBox.innerHTML='';
+  var R={};MG.el=R;
+  var st=el('<div class="mgstats"></div>');
+  [['Toneladas movidas','t'],['Plata (unidades del juego)','m'],['Mes','mo']].forEach(function(a){
+    var f=el('<div class="fact"><div class="lbl"></div><div class="big"></div></div>');
+    f.children[0].textContent=a[0];R[a[1]]=f.children[1];st.appendChild(f)});
+  var ms=el('<div class="meters"></div>');
+  [['Agua','a','m-a'],['Confianza del pueblo','c','m-c']].forEach(function(a){
+    var d=el('<div class="meter"><label><span></span><span></span></label><div class="bar '+a[2]+'"><b></b></div></div>');
+    d.querySelectorAll('span')[0].textContent=a[0];R[a[1]+'v']=d.querySelectorAll('span')[1];R[a[1]+'b']=d.querySelector('b');ms.appendChild(d)});
+  var dig=el('<button class="rockbtn" id="mgDig" type="button"><svg viewBox="0 0 120 90" aria-hidden="true"><path d="M10 80 L22 36 L52 12 L92 22 L112 58 L100 82 Z" fill="var(--s1)" stroke="var(--fg)" stroke-width="3" stroke-linejoin="round"/><path d="M52 12 L60 44 L22 36 M60 44 L92 22 M60 44 L72 82" fill="none" stroke="var(--fg)" stroke-width="2" opacity=".45"/><path d="M34 62 L50 54 L58 68 L42 74 Z" fill="var(--copper)"/><path d="M78 46 L90 42 L92 54 L80 56 Z" fill="var(--copper)"/></svg><b>Excavar</b><span class="note">Extra: +12 toneladas por toque</span></button>');
+  R.dig=dig;
+  R.panel=el('<div aria-live="polite" style="display:grid;gap:10px"></div>');
+  var ups=el('<div class="opts" id="mgUp"></div>');R.ups=[];
+  MGU.forEach(function(u){
+    var b=el('<button class="opt" type="button"><b></b><span class="note"></span><span></span></button>');
+    b.children[0].textContent=u.n;b.children[1].textContent=u.d;
+    b.onclick=function(){
+      var lv=MG.up[u.k];if(!MG.run||MG.over||MG.ev||lv>=u.max)return;
+      var c=u.cost(lv);if(MG.m<c)return;
+      MG.m-=c;MG.up[u.k]++;u.fx();MG.conf=mgClamp(MG.conf);mgUpdate()};
+    R.ups.push([u,b]);ups.appendChild(b)});
+  dig.onclick=mgDig;
+  mgBox.append(st,ms,dig,R.panel,el('<div class="lbl">Mejoras</div>'),ups);
+  var s=el('<div class="story"></div>');
+  s.textContent='Tu equipo excava solo, 4 toneladas por segundo, y vos podés tocar para ir más rápido. Con la plata comprás camiones y mejoras. Cada tonelada gasta agua, y los camiones grandes cansan a los vecinos. Cada dos meses pasa algo que te obliga a decidir.';
+  var b=el('<button class="btn" type="button" style="justify-self:start">Arrancar el año</button>');
+  b.onclick=function(){MG.run=true;mgPanel();mgUpdate();dig.focus()};
+  mgPanel(s,b);
+  mgUpdate();
+}
+function mgUpdate(){
+  var R=MG.el;
+  R.t.textContent=fmt(Math.round(MG.t));R.m.textContent=fmt(Math.round(MG.m));
+  R.mo.textContent=Math.min(12,MG.month+1)+' de 12';
+  R.av.textContent=Math.round(MG.agua)+'%';R.ab.style.width=MG.agua+'%';
+  R.cv.textContent=Math.round(MG.conf)+'%';R.cb.style.width=MG.conf+'%';
+  var live=MG.run&&!MG.over&&!MG.ev;
+  R.dig.disabled=!live;
+  R.ups.forEach(function(p){
+    var u=p[0],b=p[1],lv=MG.up[u.k],maxed=lv>=u.max,c=u.cost(lv);
+    b.children[2].textContent=maxed?'Nivel máximo ('+lv+'/'+u.max+')':'Nivel '+lv+'/'+u.max+' · Cuesta '+fmt(c);
+    b.disabled=!live||maxed||MG.m<c});
+}
+function mgDig(){
+  if(!MG.run||MG.over||MG.ev)return;
+  MG.t+=12;MG.m+=12;MG.agua=mgClamp(MG.agua-12*0.02*MG.mult);
+  var p=el('<span class="pop">+12 t</span>');
+  p.style.left=(25+Math.random()*50)+'%';p.style.top=(20+Math.random()*40)+'%';
+  MG.el.dig.appendChild(p);setTimeout(function(){p.remove()},750);
+  mgUpdate();
+}
+function mgEvent(e){
+  MG.ev=e;
+  var h=el('<h3></h3>');h.textContent='Mes '+e.m+': '+e.t;
+  var q=el('<p></p>');q.textContent=e.q;
+  var w=el('<div class="opts"></div>');
+  e.o.forEach(function(o){
+    var b=el('<button class="opt" type="button"></button>');b.textContent=o[0];
+    b.onclick=function(){
+      var d=o[1];MG.m=Math.max(0,MG.m+d.m);MG.agua=mgClamp(MG.agua+d.a);MG.conf=mgClamp(MG.conf+d.c);
+      var f=el('<div class="fb"></div>');f.textContent=o[2];
+      var n=el('<button class="btn" type="button" style="justify-self:start">Seguir</button>');
+      n.onclick=function(){MG.ev=null;mgPanel();mgUpdate();MG.el.dig.focus()};
+      mgPanel(h,q,f,n);mgUpdate();n.focus()};
+    w.appendChild(b)});
+  mgPanel(h,q,w);mgUpdate();
+}
+function mgEnd(why){
+  MG.over=true;MG.run=false;mgUpdate();
+  var T={agua:['Se secó el río','Sin agua, la mina tiene que frenar.'],conf:['La comunidad frenó el proyecto','Sin la aceptación del pueblo, o licencia social, el proyecto se detiene aunque quede mineral.'],fin:['Cerraste el año','La mina sigue en marcha.']}[why];
+  var h=el('<h3></h3>');h.textContent=T[0];
+  var p1=el('<p></p>');
+  p1.textContent=T[1]+' Moviste '+fmt(Math.round(MG.t))+' toneladas y te quedó '+Math.round(MG.agua)+'% de agua y '+Math.round(MG.conf)+'% de confianza.';
+  var g=Math.round(MG.t);
+  var p2=el('<p class="note"></p>');
+  p2.textContent='Si fuera una mina de oro de 1 gramo por tonelada, como en la actividad 2, habrías sacado unos '+fmt(g)+' gramos, o sea unos '+fmt(Math.round(g/5))+' anillos de 5 gramos. Si priorizaste mover más roca, probablemente bajaron el agua o la confianza; si cuidaste las dos cosas, moviste menos. Esa tensión es lo que se discute en la realidad.';
+  var b=el('<button class="btn" type="button" style="justify-self:start">Jugar de nuevo</button>');
+  b.onclick=mgStart;
+  mgPanel(h,p1,p2,b);b.focus();
+}
+setInterval(function(){
+  if(!MG.run||MG.over||MG.ev)return;
+  var dt=0.25,tons=MG.tps*dt;
+  MG.t+=tons;MG.m+=tons;MG.agua=mgClamp(MG.agua-tons*0.02*MG.mult);
+  MG.conf=mgClamp(MG.conf+(MG.up.loc*0.02-MG.up.truck*0.03)*dt);
+  MG.clock+=dt;
+  var mo=Math.min(12,Math.floor(MG.clock/8));
+  if(mo>MG.month){
+    MG.month=mo;
+    for(var i=0;i<MG.evs.length;i++){if(MG.evs[i].m===mo&&!MG.done[mo]){MG.done[mo]=1;mgEvent(MG.evs[i]);break}}
+  }
+  if(!MG.ev){
+    if(MG.agua<=0){mgEnd('agua');return}
+    if(MG.conf<=0){mgEnd('conf');return}
+    if(MG.clock>=96){mgEnd('fin');return}
+  }
+  mgUpdate();
+},250);
+mgStart();
+
+renderEsc();
+})();
+</script>
+
+</body></html>
